@@ -87,7 +87,16 @@ public class AnagramDictionary {
     }
 
     public String pickGoodStarterWord() {
-        return "skate";
-        //return "stop";
+        int len = wordList.size();
+        int var = random.nextInt(len),loopIndex;
+        String key;
+        for (loopIndex = var; loopIndex < (len+var+1); loopIndex++){
+            key = sortLetters(wordList.get(loopIndex % len));
+            if (lettersToWord.containsKey(key)){
+                if (lettersToWord.get(key).size() >= MIN_NUM_ANAGRAMS)
+                    break;
+            }
+        }
+        return wordList.get(loopIndex % len);
     }
 }
