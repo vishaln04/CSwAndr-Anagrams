@@ -41,6 +41,14 @@ public class AnagramDictionary {
     }
 
     public boolean isGoodWord(String word, String base) {
+        // Provided word is a valid word
+        if (!wordSet.contains(word)) {
+            return false;
+        }
+
+        // Word does not contain the base word as substring
+        if (word.contains(base))
+            return false;
         return true;
     }
 
