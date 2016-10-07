@@ -74,6 +74,15 @@ public class AnagramDictionary {
 
     public ArrayList<String> getAnagramsWithOneMoreLetter(String word) {
         ArrayList<String> result = new ArrayList<String>();
+        String key;
+        for (char s = 'a'; s <= 'z'; s++){
+            key = sortLetters(word + s);
+            if (lettersToWord.containsKey(key)){
+                android.util.Log.d(Log, key);
+                // .addAll method appends all of the elements in the specified collection to the end of this list
+                result.addAll(lettersToWord.get(key));
+            }
+        }
         return result;
     }
 
