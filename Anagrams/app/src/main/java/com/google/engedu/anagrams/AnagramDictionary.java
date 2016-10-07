@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Arrays;
 
@@ -17,14 +19,24 @@ public class AnagramDictionary {
     private static final int MAX_WORD_LENGTH = 7;
     private static final String Log = "AnagramDict";
     private Random random = new Random();
-    private ArrayList<String> wordlist = new ArrayList<>();
+    private ArrayList<String> wordList = new ArrayList<>();
+    private HashSet<String> wordSet = new HashSet<>();
+    private HashMap<String, ArrayList<String>> lettersToWord = new HashMap<String, ArrayList<String>>();
 
     public AnagramDictionary(InputStream wordListStream) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(wordListStream));
         String line;
         while((line = in.readLine()) != null) {
             String word = line.trim();
-            this.wordlist.add(word);
+            wordList.add(word);
+            wordSet.add(word);
+            if (lettersToWord.containsKey(sortLetters(word))){
+                lettersToWord.get(sortLetters(word)).add(word);
+            }
+            else {
+                // asList method returns a list view of the specified array.
+                lettersToWord.put(sortLetters(word), new ArrayList<String>(Arrays.asList(word)));
+            }
         }
     }
 
@@ -32,9 +44,9 @@ public class AnagramDictionary {
         return true;
     }
 
-    // Helper Function
+    // Helper Function sortLetters
 
-    public String sortString(String s){
+    public String sortLetters(String s){
         char[] chars = s.toCharArray();
         Arrays.sort(chars);
         return new String(chars);
@@ -42,9 +54,9 @@ public class AnagramDictionary {
 
     public ArrayList<String> getAnagrams(String targetWord) {
         ArrayList<String> result = new ArrayList<String>();
-        targetWord = this.sortString(targetWord);
-        for (String s: this.wordlist){
-            if (targetWord.equals(this.sortString(s))){
+        targetWord = this.sortLetters(targetWord);
+        for (String s: this.wordList){
+            if (targetWord.equals(this.sortLetters(s))){
                 result.add(s);
                 android.util.Log.d(Log,s);
             }
